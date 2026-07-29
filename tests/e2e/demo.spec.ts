@@ -1,0 +1,3 @@
+import {test,expect} from "@playwright/test";
+test("runs the successful rescue and shows mock labels",async({page})=>{await page.goto("/demo");await expect(page.getByText("SIMULATED · HARBOR VIEW")).toBeVisible();await page.getByRole("button",{name:"Run successful rescue"}).click();await expect(page.getByText("Rescue completed")).toBeVisible({timeout:5000});await expect(page.getByRole("list").getByText("Arrival confirmed",{exact:true})).toBeVisible()});
+test("renders a failure without claiming success",async({page})=>{await page.goto("/demo");await page.getByRole("button",{name:"Inject payment rejection"}).click();await expect(page.getByText("Booking blocked · manual recovery required")).toBeVisible()});
