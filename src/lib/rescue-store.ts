@@ -119,7 +119,7 @@ export function getRescue(): RescueSnapshot {
 const scenarioEvents: Record<Scenario, Array<[string, string, string, AuditRecord["actorType"]]>> = {
   success: [
     ["APPROVED", "APPROVED", "Manager approved restricted $40 maximum", "HUMAN"],
-    ["PAYMENT_AUTHORIZED", "PAYMENT_AUTHORIZED", "Mock Prava authorization created", "PROVIDER"],
+    ["PAYMENT_AUTHORIZED", "PAYMENT_AUTHORIZED", "Controlled mock expense authorization created", "PROVIDER"],
     ["BOOKING_CONFIRMED", "BOOKING_CONFIRMED", "Mock Uber Guest Ride booked", "PROVIDER"],
     ["WORKER_DEPARTED", "WORKER_DEPARTED", "Maria departed · ETA 6:42 AM", "PROVIDER"],
     ["ARRIVAL_CONFIRMED", "ARRIVAL_CONFIRMED", "Arrival confirmed", "PROVIDER"],
@@ -132,7 +132,7 @@ const scenarioEvents: Record<Scenario, Array<[string, string, string, AuditRecor
   ],
   ride_cancelled: [
     ["APPROVED", "APPROVED", "Manager approved restricted $40 maximum", "HUMAN"],
-    ["PAYMENT_AUTHORIZED", "PAYMENT_AUTHORIZED", "Mock Prava authorization created", "PROVIDER"],
+    ["PAYMENT_AUTHORIZED", "PAYMENT_AUTHORIZED", "Controlled mock expense authorization created", "PROVIDER"],
     ["BOOKING_CONFIRMED", "BOOKING_CONFIRMED", "Mock Uber Guest Ride booked", "PROVIDER"],
     ["RIDE_CANCELLED", "OPTIONS_DISCOVERED", "Provider cancelled ride; authorization closure requested", "PROVIDER"],
   ],

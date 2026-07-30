@@ -1,4 +1,6 @@
-# Hackathon scope
+# Original hackathon scope (archived)
+
+This document records the project’s earlier Agentic Commerce Hackathon framing for provenance. The application was not accepted into that event. Current product and competition scope is defined in `XPRIZE_SCOPE.md`.
 
 ShiftSecure is a new independent product and repository created for this build. Got2Get2Work is neither inspected nor used as a code or runtime dependency.
 

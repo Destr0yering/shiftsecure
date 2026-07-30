@@ -25,7 +25,7 @@ export default function Home() {
             <h3>Certified Nursing Assistant</h3><p>Harbor View Senior Living · starts 7:00 AM</p>
             <div className="route"><span>Maria Santos<br/><small>Pickup 6:21 AM</small></span><strong>→</strong><span>Harbor View<br/><small>Arrival 6:42 AM</small></span></div>
             <div className="metricRow"><span><small>RIDE</small><b>$36.00</b></span><span><small>ARRIVAL BUFFER</small><b>8 min</b></span><span><small>CONFIDENCE</small><b>94%</b></span></div>
-            <div className="approved">✓ Manager approved · Mock Prava authorization secured</div>
+            <div className="approved">✓ Manager approved · Controlled expense authorization secured</div>
           </div>
         </div>
       </section>
