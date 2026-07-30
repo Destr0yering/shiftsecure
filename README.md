@@ -69,7 +69,7 @@ stateDiagram-v2
   RECONCILED --> RESCUE_COMPLETED
 ```
 
-The domain and provider contracts are framework-independent. Browser clients request commands; they never submit a target state. External providers return `success`, `declined`, `retryable_error`, or `uncertain`, and uncertainty never becomes success. Idempotency keys prevent repeated mock authorizations and bookings.
+The domain and provider contracts are framework-independent. Browser clients request scenarios; they never submit a target state. A server-owned SQLite repository persists state and ordered audit events across refreshes. External providers return `success`, `declined`, `retryable_error`, or `uncertain`, and uncertainty never becomes success. Idempotency keys prevent repeated mock authorizations and bookings.
 
 ## Commands
 
@@ -99,6 +99,6 @@ Mock Prava and mobility providers power the working demo. `PravaPaymentProvider`
 
 ## Current limitations
 
-This hackathon build has no production authentication, durable running workflow store, real outreach, live provider credentials, webhooks, rate limiter, hosted database, or compliance certification. Prisma models describe the durable design, but the interactive demo is deterministic client state. Before production, use PostgreSQL, signed provider webhooks, an outbox, secure sessions and RBAC, encryption, retention controls, monitoring, and independent security/compliance review.
+This hackathon build has no production authentication, real outreach, live provider credentials, webhooks, rate limiter, hosted database, or compliance certification. The persisted SQLite workflow is intentionally single-node demo infrastructure. Before production, use PostgreSQL, signed provider webhooks, an outbox, secure sessions and RBAC, encryption, retention controls, monitoring, and independent security/compliance review.
 
 See [architecture](ARCHITECTURE.md), [scope](HACKATHON_SCOPE.md), [security](SECURITY.md), [privacy](PRIVACY.md), [testing](TESTING.md), [deployment](DEPLOYMENT.md), and [judge script](DEMO_SCRIPT.md).
