@@ -30,7 +30,7 @@ export default function Home() {
         </div>
       </section>
       <section className="featureSection"><p className="eyebrow">ONE CONTROLLED COMMERCIAL WORKFLOW</p><h2>From callout to confirmed arrival.</h2><div className="featureGrid">{features.map(([title, text], i)=><article key={title}><span>0{i+1}</span><h3>{title}</h3><p>{text}</p></article>)}</div></section>
-      <footer><span className="brand"><i>SS</i> ShiftSecure</span><span>Simulated worker, payment, and transportation data. Production compliance work remains.</span></footer>
+      <footer><span className="brand"><i>SS</i> ShiftSecure</span><span>Simulated worker, payment, and transportation data. <Link href="/terms">Terms</Link> · <Link href="/privacy">Privacy</Link> · <Link href="/acceptable-use">Acceptable use</Link></span></footer>
     </main>
   );
 }
