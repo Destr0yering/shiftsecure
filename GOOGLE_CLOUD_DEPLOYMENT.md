@@ -1,5 +1,17 @@
 # Google Cloud deployment
 
+## Current deployment
+
+- Service: `shiftsecure`
+- Region: `us-east1`
+- Public URL: <https://shiftsecure-4p6aiypj2a-ue.a.run.app>
+- Runtime: Cloud Run
+- AI provider: Vertex AI
+- Model: `gemini-2.5-flash`
+- Last health verification: August 5, 2026
+
+The deployment remains a demonstration environment using simulated people, transportation, and expense activity. It is not approved for real worker or customer data.
+
 ## Required services
 
 1. Create or select a Google Cloud project with billing enabled.

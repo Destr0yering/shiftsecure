@@ -29,25 +29,33 @@ export type RescueSnapshot = {
 };
 
 const databasePath = process.env.SHIFTSECURE_DB_PATH ?? path.join(process.cwd(), "prisma", "dev.db");
-const db = new DatabaseSync(databasePath);
-db.exec(`
-  PRAGMA journal_mode = WAL;
-  CREATE TABLE IF NOT EXISTS rescue_case (
-    id TEXT PRIMARY KEY, state TEXT NOT NULL, scenario TEXT NOT NULL,
-    approval_status TEXT NOT NULL, payment_status TEXT NOT NULL,
-    booking_status TEXT NOT NULL, authorized_cents INTEGER NOT NULL,
-    spent_cents INTEGER NOT NULL, updated_at TEXT NOT NULL
-  );
-  CREATE TABLE IF NOT EXISTS audit_event (
-    id INTEGER PRIMARY KEY AUTOINCREMENT, rescue_case_id TEXT NOT NULL,
-    sequence INTEGER NOT NULL, timestamp TEXT NOT NULL, actor_type TEXT NOT NULL,
-    actor_id TEXT NOT NULL, action TEXT NOT NULL, previous_state TEXT NOT NULL,
-    new_state TEXT NOT NULL, policy_result TEXT NOT NULL,
-    approval_status TEXT NOT NULL, summary TEXT NOT NULL,
-    correlation_id TEXT NOT NULL, operation_key TEXT NOT NULL,
-    UNIQUE(rescue_case_id, sequence), UNIQUE(rescue_case_id, operation_key)
-  );
-`);
+let database: DatabaseSync | undefined;
+
+function getDatabase(): DatabaseSync {
+  if (database) return database;
+
+  const db = new DatabaseSync(databasePath);
+  db.exec(`
+    PRAGMA busy_timeout = 5000;
+    CREATE TABLE IF NOT EXISTS rescue_case (
+      id TEXT PRIMARY KEY, state TEXT NOT NULL, scenario TEXT NOT NULL,
+      approval_status TEXT NOT NULL, payment_status TEXT NOT NULL,
+      booking_status TEXT NOT NULL, authorized_cents INTEGER NOT NULL,
+      spent_cents INTEGER NOT NULL, updated_at TEXT NOT NULL
+    );
+    CREATE TABLE IF NOT EXISTS audit_event (
+      id INTEGER PRIMARY KEY AUTOINCREMENT, rescue_case_id TEXT NOT NULL,
+      sequence INTEGER NOT NULL, timestamp TEXT NOT NULL, actor_type TEXT NOT NULL,
+      actor_id TEXT NOT NULL, action TEXT NOT NULL, previous_state TEXT NOT NULL,
+      new_state TEXT NOT NULL, policy_result TEXT NOT NULL,
+      approval_status TEXT NOT NULL, summary TEXT NOT NULL,
+      correlation_id TEXT NOT NULL, operation_key TEXT NOT NULL,
+      UNIQUE(rescue_case_id, sequence), UNIQUE(rescue_case_id, operation_key)
+    );
+  `);
+  database = db;
+  return db;
+}
 
 const rescueId = "rescue-hv-0700";
 const initialEvents = [
@@ -60,6 +68,7 @@ const initialEvents = [
 ] as const;
 
 function appendEvent(input: Omit<AuditRecord, "sequence" | "timestamp">) {
+  const db = getDatabase();
   const last = db.prepare("SELECT COALESCE(MAX(sequence), 0) AS sequence FROM audit_event WHERE rescue_case_id = ?").get(rescueId) as { sequence: number };
   db.prepare(`INSERT INTO audit_event
     (rescue_case_id, sequence, timestamp, actor_type, actor_id, action, previous_state, new_state, policy_result, approval_status, summary, correlation_id, operation_key)
@@ -68,6 +77,7 @@ function appendEvent(input: Omit<AuditRecord, "sequence" | "timestamp">) {
 }
 
 export function resetRescue(): RescueSnapshot {
+  const db = getDatabase();
   db.exec("BEGIN IMMEDIATE");
   try {
     db.prepare("DELETE FROM audit_event WHERE rescue_case_id = ?").run(rescueId);
@@ -97,6 +107,7 @@ export function resetRescue(): RescueSnapshot {
 }
 
 export function getRescue(): RescueSnapshot {
+  const db = getDatabase();
   const row = db.prepare("SELECT * FROM rescue_case WHERE id = ?").get(rescueId) as Record<string, string | number> | undefined;
   if (!row) return resetRescue();
   const events = db.prepare("SELECT * FROM audit_event WHERE rescue_case_id = ? ORDER BY sequence").all(rescueId) as Record<string, string | number>[];
@@ -142,6 +153,7 @@ const scenarioEvents: Record<Scenario, Array<[string, string, string, AuditRecor
 };
 
 export function runScenario(scenario: Scenario, operationKey: string, actorId: string): RescueSnapshot {
+  const db = getDatabase();
   const prior = db.prepare("SELECT 1 AS found FROM audit_event WHERE rescue_case_id = ? AND operation_key LIKE ? LIMIT 1").get(rescueId, `${operationKey}-%`) as { found?: number } | undefined;
   if (prior) return getRescue();
   resetRescue();

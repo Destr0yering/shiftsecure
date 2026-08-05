@@ -105,3 +105,5 @@ Mobility and expense providers remain mocked in the working demonstration. `Uber
 This prototype has no production authentication, real outreach, live mobility credentials, webhooks, rate limiter, hosted database, customers, revenue, or compliance certification. The persisted SQLite workflow is intentionally single-node demo infrastructure. Before production, use PostgreSQL, signed provider webhooks, an outbox, secure sessions and RBAC, encryption, retention controls, monitoring, and independent security/compliance review.
 
 See [XPRIZE scope](XPRIZE_SCOPE.md), [architecture](ARCHITECTURE.md), [Google Cloud deployment](GOOGLE_CLOUD_DEPLOYMENT.md), [security](SECURITY.md), [privacy](PRIVACY.md), [testing](TESTING.md), and [demo script](DEMO_SCRIPT.md).
+
+Submission tracking is maintained in [SUBMISSION_CHECKLIST.md](SUBMISSION_CHECKLIST.md). The public pilot templates are available at `/terms`, `/privacy`, and `/acceptable-use`; they require counsel review before real customer onboarding.
