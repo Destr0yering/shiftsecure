@@ -10,7 +10,7 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run tests/unit",
     "test:integration": "vitest run tests/integration",
-    "test:e2e": "playwright test",
+    "test:e2e": "node scripts/run-e2e.mjs",
     "test:all": "vitest run",
     "format": "prettier --write .",
     "db:generate": "prisma generate",
@@ -20,6 +20,7 @@
     "setup": "npm install && npm run db:generate && npm run db:seed"
   },
   "dependencies": {
+    "@google/genai": "^2.15.0",
     "@prisma/client": "^7.9.1",
     "bcryptjs": "^3.0.3",
     "jose": "^6.2.4",
@@ -31,7 +32,7 @@
   "devDependencies": {
     "@playwright/test": "^1.62.0",
     "@tailwindcss/postcss": "^4",
-    "@types/node": "^20",
+    "@types/node": "^24.13.3",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@vitest/coverage-v8": "^4.1.10",

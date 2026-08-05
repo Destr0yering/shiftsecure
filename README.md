@@ -1,6 +1,6 @@
 # ShiftSecure
 
-ShiftSecure is an agentic workforce-continuity MVP that fills an urgent vacancy, secures employer-funded transportation, enforces spending policy, and verifies that the replacement worker arrives.
+ShiftSecure is an AI-native workforce-continuity product that helps essential-service employers fill an urgent vacancy, resolve transportation barriers, maintain human control, and verify that the replacement worker arrives.
 
 > The included demo uses simulated workers, outreach, payment authorization, and transportation. It never represents a mock transaction as real.
 
@@ -41,7 +41,8 @@ flowchart LR
   P --> A[Human approval]
   O --> PP[Payment port]
   O --> TP[Transportation port]
-  PP --> MP[Mock Prava]
+  O --> G[Gemini risk analysis]
+  PP --> MP[Controlled expense authorization]
   TP --> MT[Mock mobility]
   O --> AU[Append-only audit intent]
 ```
@@ -69,7 +70,7 @@ stateDiagram-v2
   RECONCILED --> RESCUE_COMPLETED
 ```
 
-The domain and provider contracts are framework-independent. Browser clients request commands; they never submit a target state. External providers return `success`, `declined`, `retryable_error`, or `uncertain`, and uncertainty never becomes success. Idempotency keys prevent repeated mock authorizations and bookings.
+The domain and provider contracts are framework-independent. Browser clients request scenarios; they never submit a target state. A server-owned SQLite repository persists state and ordered audit events across refreshes. External providers return `success`, `declined`, `retryable_error`, or `uncertain`, and uncertainty never becomes success. Idempotency keys prevent repeated mock authorizations and bookings.
 
 ## Commands
 
@@ -83,9 +84,11 @@ npm run test:e2e
 npm run build
 ```
 
-## Integrations
+## Gemini and integrations
 
-Mock Prava and mobility providers power the working demo. `PravaPaymentProvider`, `UberGuestRidesProvider`, and `LyftConciergeProvider` are disabled adapter boundaries—not claims of verified live connectivity. Transportation business-account billing and Prava authorization remain distinct records and must be reconciled.
+The official Google Gen AI SDK powers an optional server-side Gemini operations analysis. Configure `GEMINI_API_KEY` for Google AI Studio or `GOOGLE_CLOUD_PROJECT` and `GOOGLE_CLOUD_LOCATION` for Vertex AI. Gemini produces a validated structured risk summary and recommended human action; it cannot change workflow state, employment eligibility, approvals, spending, bookings, or arrival status. When credentials are absent or a request fails, the UI visibly reports a deterministic fallback.
+
+Mobility and expense providers remain mocked in the working demonstration. `UberGuestRidesProvider` and `LyftConciergeProvider` are adapter boundaries, not claims of verified connectivity.
 
 ## Safety
 
@@ -99,6 +102,8 @@ Mock Prava and mobility providers power the working demo. `PravaPaymentProvider`
 
 ## Current limitations
 
-This hackathon build has no production authentication, durable running workflow store, real outreach, live provider credentials, webhooks, rate limiter, hosted database, or compliance certification. Prisma models describe the durable design, but the interactive demo is deterministic client state. Before production, use PostgreSQL, signed provider webhooks, an outbox, secure sessions and RBAC, encryption, retention controls, monitoring, and independent security/compliance review.
+This prototype has no production authentication, real outreach, live mobility credentials, webhooks, rate limiter, hosted database, customers, revenue, or compliance certification. The persisted SQLite workflow is intentionally single-node demo infrastructure. Before production, use PostgreSQL, signed provider webhooks, an outbox, secure sessions and RBAC, encryption, retention controls, monitoring, and independent security/compliance review.
 
-See [architecture](ARCHITECTURE.md), [scope](HACKATHON_SCOPE.md), [security](SECURITY.md), [privacy](PRIVACY.md), [testing](TESTING.md), [deployment](DEPLOYMENT.md), and [judge script](DEMO_SCRIPT.md).
+See [XPRIZE scope](XPRIZE_SCOPE.md), [architecture](ARCHITECTURE.md), [Google Cloud deployment](GOOGLE_CLOUD_DEPLOYMENT.md), [security](SECURITY.md), [privacy](PRIVACY.md), [testing](TESTING.md), and [demo script](DEMO_SCRIPT.md).
+
+Submission tracking is maintained in [SUBMISSION_CHECKLIST.md](SUBMISSION_CHECKLIST.md). The public pilot templates are available at `/terms`, `/privacy`, and `/acceptable-use`; they require counsel review before real customer onboarding.

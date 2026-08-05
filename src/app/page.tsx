@@ -25,12 +25,12 @@ export default function Home() {
             <h3>Certified Nursing Assistant</h3><p>Harbor View Senior Living · starts 7:00 AM</p>
             <div className="route"><span>Maria Santos<br/><small>Pickup 6:21 AM</small></span><strong>→</strong><span>Harbor View<br/><small>Arrival 6:42 AM</small></span></div>
             <div className="metricRow"><span><small>RIDE</small><b>$36.00</b></span><span><small>ARRIVAL BUFFER</small><b>8 min</b></span><span><small>CONFIDENCE</small><b>94%</b></span></div>
-            <div className="approved">✓ Manager approved · Mock Prava authorization secured</div>
+            <div className="approved">✓ Manager approved · Controlled expense authorization secured</div>
           </div>
         </div>
       </section>
       <section className="featureSection"><p className="eyebrow">ONE CONTROLLED COMMERCIAL WORKFLOW</p><h2>From callout to confirmed arrival.</h2><div className="featureGrid">{features.map(([title, text], i)=><article key={title}><span>0{i+1}</span><h3>{title}</h3><p>{text}</p></article>)}</div></section>
-      <footer><span className="brand"><i>SS</i> ShiftSecure</span><span>Simulated worker, payment, and transportation data. Production compliance work remains.</span></footer>
+      <footer><span className="brand"><i>SS</i> ShiftSecure</span><span>Simulated worker, payment, and transportation data. <Link href="/terms">Terms</Link> · <Link href="/privacy">Privacy</Link> · <Link href="/acceptable-use">Acceptable use</Link></span></footer>
     </main>
   );
 }
